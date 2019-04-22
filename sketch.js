@@ -16,7 +16,7 @@ var bart; // variable stores json data
 var trains = []; // stores trains as objects
 
 var stationName;
-var abbr = 'rock'; // abbreviated station name
+var abbr = getQueryVariable("abbr"); // abbreviated station name
 var KEY = "Z7MP-P9E2-9KTT-DWE9"; // key
 
 var map; // store map.png
@@ -47,6 +47,16 @@ function setup() {
 
   print(url);
   setInterval(loadBart, 2000); // refresh the bart data every 2 sec
+}
+
+function getQueryVariable(variable) {
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i=0;i<vars.length;i++) {
+      var pair = vars[i].split("=");
+      if(pair[0] == variable){return pair[1];}
+  }
+  return(false);
 }
 
 function stationAsk() {
