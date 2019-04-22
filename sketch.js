@@ -38,8 +38,8 @@ function preload(){
 function setup() {
   createCanvas(windowWidth,windowHeight);
 
-  var button = select('#submit'); // make the button
-  button.mouseClicked(stationAsk); // do the stationAsk function
+  // var button = select('#submit'); // make the button
+  // button.mouseClicked(stationAsk); // do the stationAsk function
 
   url =
     'https://api.bart.gov/api/etd.aspx?cmd=etd&orig=' + abbr +
@@ -59,19 +59,19 @@ function getQueryVariable(variable) {
   return(false);
 }
 
-function stationAsk() {
-  trains.splice(0, trains.length); // reset the data
-
-  input = select('#stationInput'); // get user data
-  abbr = input.value(); // put user data into abbr slot of url
-  url =
-      'https://api.bart.gov/api/etd.aspx?cmd=etd&orig=' + abbr +
-      '&key=' + KEY + '&json=y';
-
-  loadJSON(url, gotBart); // try to load json from url
-
-  print(url);
-}
+// function stationAsk() {
+//   trains.splice(0, trains.length); // reset the data
+//
+//   input = select('#stationInput'); // get user data
+//   abbr = input.value(); // put user data into abbr slot of url
+//   url =
+//       'https://api.bart.gov/api/etd.aspx?cmd=etd&orig=' + abbr +
+//       '&key=' + KEY + '&json=y';
+//
+//   loadJSON(url, gotBart); // try to load json from url
+//
+//   print(url);
+// }
 
 function loadBart(){
   trains.splice(0, trains.length); // reset the data
