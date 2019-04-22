@@ -42,7 +42,7 @@ function setup() {
   button.mouseClicked(stationAsk); // do the stationAsk function
 
   url =
-    'http://api.bart.gov/api/etd.aspx?cmd=etd&orig=' + abbr +
+    'https://api.bart.gov/api/etd.aspx?cmd=etd&orig=' + abbr +
     '&key=' + KEY + '&json=y';
 
   print(url);
@@ -55,7 +55,7 @@ function stationAsk() {
   input = select('#stationInput'); // get user data
   abbr = input.value(); // put user data into abbr slot of url
   url =
-      'http://api.bart.gov/api/etd.aspx?cmd=etd&orig=' + abbr +
+      'https://api.bart.gov/api/etd.aspx?cmd=etd&orig=' + abbr +
       '&key=' + KEY + '&json=y';
 
   loadJSON(url, gotBart); // try to load json from url
