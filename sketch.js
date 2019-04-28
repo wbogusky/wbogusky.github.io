@@ -1,60 +1,40 @@
-// This file was written without reference to any specific existing file
-// however I made frequent use of the Coding Train videos by Daniel Shiffman
-// for assistance. I'd also like to thank Michael Toren for teaching
-// the Computational Practices 1 course.
-//
-// Goals for this program are:
-// Allow users to choose a relevant station and view the appropriate information
-//
-// Problems with this program are:
-// Right now the available trains populate in static rows.
-// The trains should animate along their routes. How do I accomplish that?
-
-
-
 var bart; // variable stores json data
 var trains = []; // stores trains as objects
-
-var stationName;
-
 var abbr = getQueryVariable("abbr"); // abbreviated station name
+print(abbr);
+
 if (abbr === undefined){
   abbr = "rock";
 }
 
+var stationName;
 var KEY = "Z7MP-P9E2-9KTT-DWE9"; // key
-
 var url;
-
 var input; // variable for the input field
-
-// function preload(){
-//   var d = new Date(); // find the current date
-//   var dotw = d.getDay(); // get the day of the week
-//
-// }
 
 function setup() {
   createCanvas(windowWidth,windowHeight);
 
-  // var button = select('#submit'); // make the button
-  // button.mouseClicked(stationAsk); // do the stationAsk function
+  colorMode(HSB);
+  rectMode(CENTER);
 
   url =
     'https://api.bart.gov/api/etd.aspx?cmd=etd&orig=' + abbr +
     '&key=' + KEY + '&json=y';
-
   print(url);
+
   setInterval(loadBart, 2000); // refresh the bart data every 2 sec
 }
 
 function getQueryVariable(variable) {
   var query = window.location.search.substring(1);
   var vars = query.split("&");
+
   for (var i=0;i<vars.length;i++) {
       var pair = vars[i].split("=");
       if(pair[0] == variable){return pair[1];}
   }
+
   return(false);
 }
 
@@ -87,10 +67,10 @@ function gotBart(bart){
       var train = bart.root.station[0].etd[i].estimate[j];
 
       trains.push({
-          x: parseInt(train.minutes) * 5,
-          y: (60 * i)+20,
-          w: 20,
-          l: 50,
+          x: width/4,
+          y: parseInt(train.minutes) * 5,
+          w: width/4,
+          h: 50,
           rotate: 0,
           estimate: train.minutes + 'm',
           dir: bart.root.station[0].etd[i].estimate[j].direction,
@@ -100,20 +80,39 @@ function gotBart(bart){
   }
 
   // draw trains
+  background(25);
   for (i = 0; i < trains.length; i++) {
     var train = trains[i];
+
+    if (train.dir === "South"){
+      var flip = -1;
+    } else {
+      var flip = 1;
+    }
+
+    push();
     noStroke();
-    fill(train.color)
-    rect(train.x, train.y, train.w, train.l, 5);
+    fill(train.color);
+    translate(width/2, height/2);
+    rect(train.x * flip, train.y * flip, train.w, train.h, 10);
+
     fill(0);
-    text(train.estimate, train.x, train.y + 20);
-    text(train.dir, train.x, train.y + 40);
-    // trains.splice(0,trains.length);
+    text(train.estimate, train.x * flip, train.y * flip);
+    text(train.dir, train.x * flip, train.y * flip + 20);
+    pop();
   }
 }
 
 
 function draw() {
-  rectMode(CENTER)
-  rect(width/2, height/2, 0.8*width, 50);
+  push();
+  fill(50);
+  noStroke();
+  rect(width/2, height/2, width-100, 50, 10);
+
+  fill(100);
+  textSize(25);
+  textStyle(BOLD);
+  text(stationName, 75, height/2+8);
+  pop();
 }
