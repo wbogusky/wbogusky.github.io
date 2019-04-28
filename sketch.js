@@ -117,5 +117,6 @@ function gotBart(bart){
 
 
 function draw() {
-
+  rectMode(CENTER)
+  rect(width/2, height/2, 0.8*width, 50);
 }
