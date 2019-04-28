@@ -16,24 +16,23 @@ var bart; // variable stores json data
 var trains = []; // stores trains as objects
 
 var stationName;
+
+if (getQueryVariable("abbr" === TRUE){
 var abbr = getQueryVariable("abbr"); // abbreviated station name
+} else {
+  var abbr = "rock";
+}
 var KEY = "Z7MP-P9E2-9KTT-DWE9"; // key
 
-var map; // store map.png
 var url;
 
 var input; // variable for the input field
 
-function preload(){
-  var d = new Date(); // find the current date
-  var dotw = d.getDay(); // get the day of the week
-
-  if (dotw === 0){ // if it's sunday
-    map = loadImage('mapSunday.png'); // load sunday map
-  } else {
-    map = loadImage('map.png'); // load default map
-  }
-}
+// function preload(){
+//   var d = new Date(); // find the current date
+//   var dotw = d.getDay(); // get the day of the week
+//
+// }
 
 function setup() {
   createCanvas(windowWidth,windowHeight);
