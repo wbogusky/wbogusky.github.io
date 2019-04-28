@@ -80,8 +80,6 @@ function loadBart(){
 }
 
 function gotBart(bart){
-  image(map, 0, 0, 500, 500); // draw map image
-
   stationName = bart.root.station[0].name;
 
   // push train objects into trains array
