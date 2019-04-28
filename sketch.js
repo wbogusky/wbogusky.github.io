@@ -17,11 +17,11 @@ var trains = []; // stores trains as objects
 
 var stationName;
 
-if (getQueryVariable("abbr" === TRUE){
 var abbr = getQueryVariable("abbr"); // abbreviated station name
-} else {
-  var abbr = "rock";
+if (abbr === undefined){
+  abbr = "rock";
 }
+
 var KEY = "Z7MP-P9E2-9KTT-DWE9"; // key
 
 var url;
