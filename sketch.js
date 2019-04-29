@@ -1,7 +1,6 @@
 var bart; // variable stores json data
 var trains = []; // stores trains as objects
 var abbr = getQueryVariable("abbr"); // abbreviated station name
-print(abbr);
 
 if (abbr === undefined){
   abbr = "rock";
