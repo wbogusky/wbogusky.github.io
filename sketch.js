@@ -99,6 +99,17 @@ function gotBart(bart){
     text(train.estimate, train.x * flip, train.y * flip);
     text(train.dir, train.x * flip, train.y * flip + 20);
     pop();
+    
+    push();
+    fill(50);
+    noStroke();
+    rect(width/2, height/2, width-100, 50, 10);
+
+    fill(100);
+    textSize(25);
+    textStyle(BOLD);
+    text(stationName, 75, height/2+8);
+    pop();
   }
 }
 
