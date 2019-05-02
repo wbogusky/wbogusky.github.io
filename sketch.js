@@ -1,9 +1,17 @@
+// what's broken?
+// fix track positioning
+// make train text legible
+// fix train positioning
+// display platform #s as text
+
+
 var bart; // variable stores json data
 
 var trains = []; // stores trains as objects
 
 var abbr = getQueryVariable("abbr"); // abbreviated station name
 var stationName; // full station name
+var qtyPlatforms; // number of platforms at this station
 
 var KEY = "Z7MP-P9E2-9KTT-DWE9"; // key
 var url; // API url
@@ -20,6 +28,12 @@ if (abbr === false){
 
 function setup() {
   print(abbr);
+
+  // load stationInfo
+  print('https://api.bart.gov/api/stn.aspx?cmd=stninfo&orig=' + abbr +
+  '&key=' + KEY + '&json=y');
+  loadJSON('https://api.bart.gov/api/stn.aspx?cmd=stninfo&orig=' + abbr +
+  '&key=' + KEY + '&json=y', gotStation)
 
   createCanvas(windowWidth,windowHeight); // fullscreen
 
@@ -92,16 +106,34 @@ function bar(){
   pop();
 }
 
+function gotStation(stn){
+  stn = stn.root.stations.station;
+
+  qtyPlatforms = stn.north_platforms.platform.length + stn.south_platforms.platform.length;
+  print(qtyPlatforms);
+}
+
 // this function runs if the bart data is loaded
 function gotBart(bart){
   stationName = bart.root.station[0].name; // pull full station name for reference in draw()
 
   background(25); // clear old trains
-  for (i = centerBar.width/8; i > width; i += centerBar.width/4){
-    stroke(255);
-    strokeWeight(1);
-    line(i+100, 0, i+100, height);
+
+  // draw tracks
+  for (i = 0; i < qtyPlatforms; i++){
+    push();
+    translate(width/2, 0);
+    stroke(0, 0, 100);
+    strokeWeight(10);
+    line(-1/qtyPlatforms * centerBar.width + (i*centerBar.width/qtyPlatforms), 0, -1/qtyPlatforms * centerBar.width + (i*centerBar.width/qtyPlatforms), height);
+    pop();
   }
+
+  // for (i = centerBar.width/(qtyPlatforms*2); i < width; i += centerBar.width/qtyPlatforms){
+  //   stroke(0, 0, 100);
+  //   strokeWeight(10);
+  //   line(i+(width-centerBar.width), 0, i+100, height);
+  // }
 
   // push train objects into trains array
   for (i = 0; i < bart.root.station[0].etd.length; i++) {
