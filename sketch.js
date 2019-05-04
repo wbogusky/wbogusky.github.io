@@ -1,7 +1,4 @@
 // what's broken?
-// fix track positioning
-// make train text legible
-// fix train positioning
 // display platform #s as text
 
 
@@ -44,9 +41,9 @@ function setup() {
   }
 
   pill = { // train icon as object
-    width: (centerBar.width/4) - 20,
-    height: 40,
-    round: 20,
+    width: (centerBar.width/3) - 20,
+    height: 60,
+    round: 30,
   }
 
   colorMode(HSB);
@@ -100,7 +97,6 @@ function bar(){
   // draw centerBar text
   fill(100);
   textSize(centerBar.height*0.4);
-  textStyle(BOLD);
   textAlign(LEFT, CENTER);
   text(stationName, 100, height/2);
   pop();
@@ -116,44 +112,34 @@ function gotStation(stn){
 // this function runs if the bart data is loaded
 function gotBart(bart){
   stationName = bart.root.station[0].name; // pull full station name for reference in draw()
+  var offset = (width - centerBar.width)/2;
+  var space = centerBar.width/(qtyPlatforms+1);
 
-  background(25); // clear old trains
+  background(20); // clear old trains
 
   // draw tracks
   for (i = 0; i < qtyPlatforms; i++){
-    var offset = width - centerBar.width;
-    print(offset);
-    var space = centerBar.width/qtyPlatforms;
-    print(space):
-    stroke(0, 0, 100);
+    stroke(15);
     strokeWeight(10);
     line(space * (i+1) + offset, 0, space * (i+1) + offset, height);
-    print(space * (i+1) + offset);
   }
-
-  // for (i = centerBar.width/(qtyPlatforms*2); i < width; i += centerBar.width/qtyPlatforms){
-  //   stroke(0, 0, 100);
-  //   strokeWeight(10);
-  //   line(i+(width-centerBar.width), 0, i+100, height);
-  // }
 
   // push train objects into trains array
   for (i = 0; i < bart.root.station[0].etd.length; i++) {
     for (j = 0; j < bart.root.station[0].etd[i].estimate.length; j++){
       var train = bart.root.station[0].etd[i].estimate[j];
 
-      var platforms = [1,1,2,2]; // array to change platform numbers from 1234 to 1122
-
       trains.push({
-          x: ((centerBar.width)/4 * platforms[parseInt(train.platform)-1]) - pill.width/2,
-          y: (train.minutes * height / 100) + centerBar.height/2,
+          x: (space * parseInt(train.platform) + offset),
+          y: (train.minutes * height / 120) + centerBar.height/2,
           w: pill.width,
           h: pill.height,
           round: pill.round,
           estimate: train.minutes,
           dir: train.direction,
           destination: bart.root.station[0].etd[i].destination,
-          color: train.hexcolor,
+          hexcolor: train.hexcolor,
+          color: train.color,
       });
     }
   }
@@ -172,14 +158,21 @@ function gotBart(bart){
     push();
     // draw train
     noStroke();
-    fill(train.color);
-    translate(width/2, height/2);
-    rect(train.x * flip, train.y * flip, train.w, train.h, train.round);
+    fill(train.hexcolor);
+    translate(0, height/2);
+    rect(train.x, train.y * flip, train.w, train.h, train.round);
+
     // draw train text
-    fill(0);
+    if (train.color === "YELLOW"){
+      fill(0);
+    } else {
+      fill(255);
+    }
+
     textAlign(CENTER, CENTER);
     textSize(pill.height*0.4);
-    text(train.estimate + " min - " + train.destination, train.x * flip, train.y * flip);
+    textStyle(BOLD);
+    text(train.estimate + " min - " + train.destination, train.x, train.y * flip);
     pop();
 
     // draw centerBar
