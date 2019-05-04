@@ -122,10 +122,13 @@ function gotBart(bart){
   // draw tracks
   for (i = 0; i < qtyPlatforms; i++){
     var offset = width - centerBar.width;
+    print(offset);
     var space = centerBar.width/qtyPlatforms;
+    print(space):
     stroke(0, 0, 100);
     strokeWeight(10);
     line(space * (i+1) + offset, 0, space * (i+1) + offset, height);
+    print(space * (i+1) + offset);
   }
 
   // for (i = centerBar.width/(qtyPlatforms*2); i < width; i += centerBar.width/qtyPlatforms){
