@@ -121,12 +121,11 @@ function gotBart(bart){
 
   // draw tracks
   for (i = 0; i < qtyPlatforms; i++){
-    push();
-    translate(width/2, 0);
+    var offset = width - centerBar.width;
+    var space = centerBar.width/qtyPlatforms;
     stroke(0, 0, 100);
     strokeWeight(10);
-    line(-1/qtyPlatforms * centerBar.width + (i*centerBar.width/qtyPlatforms), 0, -1/qtyPlatforms * centerBar.width + (i*centerBar.width/qtyPlatforms), height);
-    pop();
+    line(space * (i+1) + offset, 0, space * (i+1) + offset, height);
   }
 
   // for (i = centerBar.width/(qtyPlatforms*2); i < width; i += centerBar.width/qtyPlatforms){
