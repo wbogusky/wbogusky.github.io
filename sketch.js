@@ -1,4 +1,9 @@
-// QR HERE
+// This project is intended to make information about BART stations and trains
+// more accessible by:
+// A - Creating a visual interface that is more spatially related to the
+// user than a timetable
+// B - Providing access to this information without
+// a downloadable app or the need to walk all the way into the station
 
 var abbr = getQueryVariable("abbr"); // abbreviated station name
 
