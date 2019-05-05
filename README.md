@@ -1,4 +1,4 @@
-# wbogusky.github.io
+# [wbogusky.github.io](wbogusky.github.io, "QR HERE")
 
 # Q R Here
 QR code stickers and a web app to help BART passengers visualize incoming trains.
