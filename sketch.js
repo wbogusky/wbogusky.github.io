@@ -17,6 +17,9 @@ var url; // API url
 var pill; // train icons
 var centerBar; // station icon
 
+var offset;
+var space;
+
 // trying to account for when you access
 // the page without a station specified by the url
 if (abbr === false){
@@ -33,6 +36,7 @@ function setup() {
   '&key=' + KEY + '&json=y', gotStation)
 
   createCanvas(windowWidth,windowHeight); // fullscreen
+
 
   centerBar = { // station icon as object
     width: width-100,
@@ -99,6 +103,23 @@ function bar(){
   textSize(centerBar.height*0.4);
   textAlign(LEFT, CENTER);
   text(stationName, 100, height/2);
+
+  // draw platform number badges
+  var alternate = [-1, 1, -1, 1];
+  textSize(40);
+  textAlign(CENTER, CENTER);
+
+  for (i = 0; i < qtyPlatforms; i++){
+  fill(75);
+  stroke(15);
+  strokeWeight(5);
+  ellipse( space * (i+1) + offset, height/2- (centerBar.height/2*alternate[i]), 60);
+
+  noStroke();
+  fill(15);
+  text((i+1).toString(), space * (i+1) + offset, height/2- (centerBar.height/2*alternate[i]));
+  }
+
   pop();
 }
 
@@ -112,8 +133,8 @@ function gotStation(stn){
 // this function runs if the bart data is loaded
 function gotBart(bart){
   stationName = bart.root.station[0].name; // pull full station name for reference in draw()
-  var offset = (width - centerBar.width)/2;
-  var space = centerBar.width/(qtyPlatforms+1);
+  offset = (width - centerBar.width)/2;
+  space = centerBar.width/(qtyPlatforms+1);
 
   background(20); // clear old trains
 
@@ -124,6 +145,9 @@ function gotBart(bart){
     line(space * (i+1) + offset, 0, space * (i+1) + offset, height);
   }
 
+  //draw station bar
+  bar();
+
   // push train objects into trains array
   for (i = 0; i < bart.root.station[0].etd.length; i++) {
     for (j = 0; j < bart.root.station[0].etd[i].estimate.length; j++){
@@ -131,7 +155,7 @@ function gotBart(bart){
 
       trains.push({
           x: (space * parseInt(train.platform) + offset),
-          y: (train.minutes * height / 120) + centerBar.height/2,
+          y: (train.minutes * 13) + centerBar.height/2,
           w: pill.width,
           h: pill.height,
           round: pill.round,
@@ -163,7 +187,7 @@ function gotBart(bart){
     rect(train.x, train.y * flip, train.w, train.h, train.round);
 
     // draw train text
-    if (train.color === "YELLOW"){
+    if (train.color === "YELLOW" || train.color === "WHITE"){
       fill(0);
     } else {
       fill(255);
@@ -174,12 +198,8 @@ function gotBart(bart){
     textStyle(BOLD);
     text(train.estimate + " min - " + train.destination, train.x, train.y * flip);
     pop();
-
-    // draw centerBar
-    bar();
   }
 }
 
 function draw() {
-  bar();
 }
