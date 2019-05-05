@@ -1,24 +1,6 @@
-// what's broken?
-// display platform #s as text
-
-
-var bart; // variable stores json data
-
-var trains = []; // stores trains as objects
+// QR HERE
 
 var abbr = getQueryVariable("abbr"); // abbreviated station name
-var stationName; // full station name
-var qtyPlatforms; // number of platforms at this station
-
-var KEY = "Z7MP-P9E2-9KTT-DWE9"; // key
-var url; // API url
-
-// objects
-var pill; // train icons
-var centerBar; // station icon
-
-var offset;
-var space;
 
 // trying to account for when you access
 // the page without a station specified by the url
@@ -26,18 +8,49 @@ if (abbr === false){
   abbr = "rock";
 }
 
+var KEY = "Z7MP-P9E2-9KTT-DWE9"; // key
+var url; // full API url
+
+// station info
+var stationName; // full station name
+var qtyPlatforms; // number of platforms at this station
+
+var bart; // stores json data
+var trains = []; // stores trains as objects
+
+// objects
+var pill; // train icons
+var centerBar; // station icon
+
+// shape positioning
+var offset;
+var space;
+
 function setup() {
+
+  createCanvas(windowWidth,windowHeight); // fullscreen
+  colorMode(HSB);
+  rectMode(CENTER); // easier to position shapes
+
   print(abbr);
 
-  // load stationInfo
+  // load stationInfo once
   print('https://api.bart.gov/api/stn.aspx?cmd=stninfo&orig=' + abbr +
   '&key=' + KEY + '&json=y');
   loadJSON('https://api.bart.gov/api/stn.aspx?cmd=stninfo&orig=' + abbr +
   '&key=' + KEY + '&json=y', gotStation)
 
-  createCanvas(windowWidth,windowHeight); // fullscreen
+  url = // assembling url
+    'https://api.bart.gov/api/etd.aspx?cmd=etd&orig=' + abbr +
+    '&key=' + KEY + '&json=y';
 
+  print(url);
 
+  // load departure estimates every 2 sec
+  loadJSON(url, gotBart); // load json from url for the first time
+  setInterval(loadBart, 2000); // refresh the bart data every 2 sec
+
+  // created objects to centralize sizing issues
   centerBar = { // station icon as object
     width: width-100,
     height: 150,
@@ -49,18 +62,6 @@ function setup() {
     height: 60,
     round: 30,
   }
-
-  colorMode(HSB);
-  rectMode(CENTER); // easier to position shapes
-
-  url = // assembling url
-    'https://api.bart.gov/api/etd.aspx?cmd=etd&orig=' + abbr +
-    '&key=' + KEY + '&json=y';
-
-  print(url); // makes accessing the original json quicker
-
-  loadJSON(url, gotBart); // try to load json from url for the first time
-  setInterval(loadBart, 2000); // refresh the bart data every 2 sec
 }
 
 // this function was found via google on css-tricks.com
@@ -84,12 +85,13 @@ function loadBart(){
   loadJSON(url, gotBart); // try to load json from url
 }
 
-// function to draw center bar
+// function to draw center bar and platform badges
 function bar(){
   push();
   fill(50);
   noStroke();
 
+  // draw centerBar
   rect(
     width/2,
     height/2,
@@ -104,37 +106,40 @@ function bar(){
   textAlign(LEFT, CENTER);
   text(stationName, 100, height/2);
 
-  // draw platform number badges
+  // draw platform number badges and text
   var alternate = [-1, 1, -1, 1];
   textSize(40);
   textAlign(CENTER, CENTER);
-
   for (i = 0; i < qtyPlatforms; i++){
-  fill(75);
-  stroke(15);
-  strokeWeight(5);
-  ellipse( space * (i+1) + offset, height/2- (centerBar.height/2*alternate[i]), 60);
+    //badges
+    fill(75);
+    stroke(15);
+    strokeWeight(5);
+    ellipse( space * (i+1) + offset, height/2- (centerBar.height/2*alternate[i]), 60);
 
-  noStroke();
-  fill(15);
-  text((i+1).toString(), space * (i+1) + offset, height/2- (centerBar.height/2*alternate[i]));
+    // text
+    noStroke();
+    fill(15);
+    text((i+1).toString(), space * (i+1) + offset, height/2- (centerBar.height/2*alternate[i]));
   }
 
   pop();
 }
 
+// this funtion just sets and prints the qtyPlatforms variable
 function gotStation(stn){
   stn = stn.root.stations.station;
 
   qtyPlatforms = stn.north_platforms.platform.length + stn.south_platforms.platform.length;
-  print(qtyPlatforms);
+  print("Platforms: " + qtyPlatforms);
 }
 
 // this function runs if the bart data is loaded
+// drawing occurs here
 function gotBart(bart){
   stationName = bart.root.station[0].name; // pull full station name for reference in draw()
-  offset = (width - centerBar.width)/2;
-  space = centerBar.width/(qtyPlatforms+1);
+  offset = (width - centerBar.width)/2; // dist between left edge and centerBar
+  space = centerBar.width/(qtyPlatforms+1); // space between tracks
 
   background(20); // clear old trains
 
@@ -199,7 +204,4 @@ function gotBart(bart){
     text(train.estimate + " min - " + train.destination, train.x, train.y * flip);
     pop();
   }
-}
-
-function draw() {
 }
