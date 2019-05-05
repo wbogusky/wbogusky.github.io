@@ -31,7 +31,6 @@ What did you do in each of the past four weeks?
 - Week 4: Present!
 
 ## Challenges
-A brief discussion of what was hard, challenging, or unexpected about your project.
 I initially wanted to create something that was pretty ambitious without realizing it. Trying to synthesize the data that BART provides into usable map data proved too challenging. While this was disheartening, after reassessing the goals of the project, I found that a simpler visualization could actually provide more relevant information to the user.
 
 ## Completed Work
@@ -41,7 +40,6 @@ I initially wanted to create something that was pretty ambitious without realizi
 [Glen Park](https://raw.githubusercontent.com/wbogusky/wbogusky.github.io/master/IMG_4489.PNG "glen")
 
 ## References and links
-Tutorials, comments, videos, magazine articles - anything you found that helps you understand your project.
 - I used a multitude of videos by Daniel Shiffman to understand how to work with APIs.
 - I also was given access to a defunct project by another professor that used the BART API, although I didn't use it at all.
 - I also used a snippet found via google on css-tricks.com to pull data from the URL
