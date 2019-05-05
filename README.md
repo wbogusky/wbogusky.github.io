@@ -35,10 +35,10 @@ A brief discussion of what was hard, challenging, or unexpected about your proje
 I initially wanted to create something that was pretty ambitious without realizing it. Trying to synthesize the data that BART provides into usable map data proved too challenging. While this was disheartening, after reassessing the goals of the project, I found that a simpler visualization could actually provide more relevant information to the user.
 
 ## Completed Work
-![](/IMG_4485.PNG "19TH" =300x)
-![](/IMG_4486.PNG "19TH" =300x)
-![](/IMG_4488.PNG "19TH" =300x)
-![](/IMG_4489.PNG "19TH" =300x)
+[Rockridge](/IMG_4485.PNG "rock")
+[MacArthur](/IMG_4486.PNG "mcar")
+[19th St. Station](/IMG_4488.PNG "19th")
+[Glen Park](/IMG_4489.PNG "glen")
 
 ## References and links
 Tutorials, comments, videos, magazine articles - anything you found that helps you understand your project.
